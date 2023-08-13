@@ -16,4 +16,5 @@ The official Arduino support for the Esp32-C6 chip is on the way(as of 13/08/202
   - git submodule update --init --recursive
 - Open [sketchdirectory]/hardware/espressif/arduino-esp32/tools and double-click get.exe
 - After the process finishes go to Arduino IDE->Tools->Board->Esp32C6 Dev Module
-
+## ESP-IDF examples
+If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
