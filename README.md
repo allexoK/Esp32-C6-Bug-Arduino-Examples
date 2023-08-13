@@ -17,4 +17,3 @@ The official Arduino support for the Esp32-C6 chip is on the way(as of 13/08/202
 - Open [sketchdirectory]/hardware/espressif/arduino-esp32/tools and double-click get.exe
 - After the process finishes go to Arduino IDE->Tools->Board->Esp32C6 Dev Module
 
-
