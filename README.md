@@ -3,7 +3,7 @@ Hello internet traveller,
 You have just arrived to the repository containing Arduino code examples for Esp32-C6-Bug.
 ## Arduino IDE support
 The official Arduino support for the Esp32-C6 chip is on the way(as of 13/08/2023). If you are viewing this repo and it is still not published you can go to [this manual](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html) and refer to 'Windows (manual installation)' section to install Esp32-Arduino core supporting Esp32-C6. Here is how I did it:
-- Download git and open git bash
+- Download and install git
 - Open git bash
 - Go to [sketchdirectory]/hardware/espressif/(if you don’t hardware/espressif path then create it)
 - Clone the repository:
