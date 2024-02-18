@@ -23,7 +23,6 @@ When compiling the examples ensure that:
         - Some Oled with SH1106 driver
         - optional: Esp32-Bug-Eth
 - esp32c6bugethernetbmp280telegrambot - This example is more advanced and more 'open-ended,' but it is my personal favorite. It uses Ethernet to connect to the Internet, reads data from a BMP280 sensor (which you can later replace with any other sensor or combination of sensors), and sends it to you via Telegram messenger if the data exceeds a certain limit (temperature range: 20-30 °C). You can follow this tutorial to obtain the Telegram token and Chat ID defined in the code.
-
 I personally love this example because I see it as a stepping stone to some interesting experiments. Imagine a group of sensors 'writing' data to a Telegram chat, and an AI like ChatGPT reading the sensor data from the chat and commanding other IoT devices to perform actions (like issuing an 'open the window' command via the same chat). Can it handle the data like this? Will it open the window if the temperature is too hot? What is the maximum number of 'inputs' and 'outputs' it can handle? No one knows since the technology is quite new. Maybe you will be the first person to find out?
     - Parts needed:
         - Esp32-C6-Bug
