@@ -21,23 +21,23 @@ The second example utizes the Ethernet to connect to the Internet, use it to ens
         - Esp32-Bug-Eth
 ### esp32c6bugplusSH1106_128x64_i2c_QTPY
 For this example, you will need some kind of OLED display based around SH1106 driver. If it has Stemma QT connector you can connect it to Esp32-Bug-Eth via it(Alternatively just connect display SDA->pin 21, display SCL->pin 20). The code prints basic 'hello world' style message.  
-    - Parts needed:
-        - Esp32-C6-Bug
-        - Some Oled with SH1106 driver
-        - optional: Esp32-Bug-Eth
+- Parts needed:
+    - Esp32-C6-Bug
+    - Some Oled with SH1106 driver
+    - optional: Esp32-Bug-Eth
 ### esp32c6bugethernetbmp280telegrambot
 This example is more advanced and more 'open-ended,' but it is my personal favorite. It uses Ethernet to connect to the Internet, reads data from a BMP280 sensor (which you can later replace with any other sensor or combination of sensors), and sends it to you via Telegram messenger if the data exceeds a certain limit (temperature range: 20-30 °C). You can follow [this](https://randomnerdtutorials.com/telegram-control-esp32-esp8266-nodemcu-outputs/) tutorial to obtain the Telegram token and Chat ID defined in the code.
 I personally love this example because I see it as a stepping stone to some interesting experiments. Imagine a group of sensors 'writing' data to a Telegram chat, and an AI like ChatGPT reading the sensor data from the chat and commanding other IoT devices to perform actions (like issuing an 'open the window' command via the same chat). Can it handle the data like this? Will it open the window if the temperature is too hot? What is the maximum number of 'inputs' and 'outputs' it can handle? No one knows since the technology is quite new. Maybe you will be the first person to find out?
-    - Parts needed:
-        - Esp32-C6-Bug
-        - BMP280 sensor(Something with Stemma QT works best)
-        - Esp32-Bug-Eth
+- Parts needed:
+    - Esp32-C6-Bug
+    - BMP280 sensor(Something with Stemma QT works best)
+    - Esp32-Bug-Eth
 
 ### esp32c6bugzigbeemqttbridge
 The example demonstrates a simple Zigbee to MQTT bridge for light bulbs. The Esp32-C6-Bug+Esp32-Bug-Eth combo works as a Zigbee coordinator and a PoE-Powered Ethernet MQTT client. After the client receives a message from the broker on the 'test/light' topic, it turns on/off all the connected light bulbs. The example can be the first stepping stone for building an Esp32-C6-Bug Arduino Zigbee To MQTT Bridge! Don't forget to set your MQTT credentials in Zigbee_Mqtt_Light_Bridge.ino. Also, you will need the Arduino core with Zigbee support (as of 24/02/2024, the support is already in the master branch).
-    - Parts needed:
-        - Esp32-C6-Bugx2(Also tested with Sonoff s26r2zbtpe smart socket as End device)
-        - Esp32-Bug-Eth
+- Parts needed:
+    - Esp32-C6-Bugx2(Also tested with Sonoff s26r2zbtpe smart socket as End device)
+    - Esp32-Bug-Eth
 
 ![Esp32-C6-Bug+Esp32-Bug-Eth Bridge and Zigbee Smart plug](images/zigbeesmartplug.jpg)
 ## ESP-IDF examples
