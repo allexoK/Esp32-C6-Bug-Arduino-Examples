@@ -29,6 +29,10 @@ I personally love this example because I see it as a stepping stone to some inte
         - BMP280 sensor(Something with Stemma QT works best)
         - Esp32-Bug-Eth
 
+- esp32c6bugzigbeemqttbridge - The example demonstrates a simple Zigbee to MQTT bridge for light bulbs. The Esp32-C6-Bug+Esp32-Bug-Eth combo works as a Zigbee coordinator and a PoE-Powered Ethernet MQTT client. After the client receives a message from the broker on the 'test/light' topic, it turns on/off all the connected light bulbs. The example can be the first stepping stone for building an Esp32-C6-Bug Arduino Zigbee To MQTT Bridge! Don't forget to set your MQTT credentials in Zigbee_Mqtt_Light_Bridge.ino. Also, you will need the Arduino core with Zigbee support (as of 24/02/2024, the support is already in the master branch).
+    - Parts needed:
+        - Esp32-C6-Bugx2(Also tested with Sonoff s26r2zbtpe smart socket as End device)
+        - Esp32-Bug-Eth
 
 ## ESP-IDF examples
 If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
