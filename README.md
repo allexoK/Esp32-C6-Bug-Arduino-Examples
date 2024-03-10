@@ -44,6 +44,7 @@ This is an ugraded version of esp32c6bugzigbeemqttbridge. More  To compile it yo
 - LinkedList
 - SPIFFs
 - ArduinoJson
+
 Additionally to the mentioned Zigbee to MQTT features from the previous example, the following functionality was implemented:
 - Home assistant auto-discovery. All the found devices are now published to MQTT (you can also use this functionality to find out their command/state MQTT topics to control via Node RED for example)
 - MQTT configuration via web server running on the bridge.(Hold the button untill the onboard LED starts blinking fast) Configuration is saved to internal file system and persists after reboot.
