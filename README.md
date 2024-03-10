@@ -39,6 +39,8 @@ The example demonstrates a simple Zigbee to MQTT bridge for light bulbs. The Esp
     - Esp32-C6-Bugx2(Also tested with Sonoff s26r2zbtpe smart socket as End device)
     - Esp32-Bug-Eth
 
+![Esp32-C6-Bug+Esp32-Bug-Eth Bridge and Zigbee Smart plug](images/zigbeesmartplug.jpg)
+
 ### esp32c6bugzigbeemqttbridgehassautodiscovery
 This is an ugraded version of esp32c6bugzigbeemqttbridge. More  To compile it you will also need the following libraries:
 - LinkedList
@@ -59,6 +61,5 @@ Additionally to the mentioned Zigbee to MQTT features from the previous example,
     - Esp32-Bug-Eth
     - Zigbee Smart socket/Zigbee Light bulb(Tested with Sonoff s26r2zbtpe smart socket as End device)
 
-![Esp32-C6-Bug+Esp32-Bug-Eth Bridge and Zigbee Smart plug](images/zigbeesmartplug.jpg)
 ## ESP-IDF examples
 If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
