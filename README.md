@@ -39,6 +39,25 @@ The example demonstrates a simple Zigbee to MQTT bridge for light bulbs. The Esp
     - Esp32-C6-Bugx2(Also tested with Sonoff s26r2zbtpe smart socket as End device)
     - Esp32-Bug-Eth
 
+### esp32c6bugzigbeemqttbridgehassautodiscovery
+This is an ugraded version of esp32c6bugzigbeemqttbridge. More  To compile it you will also need the following libraries:
+- LinkedList
+- SPIFFs
+- ArduinoJson
+Additionally to the mentioned Zigbee to MQTT features from the previous example, the following functionality was implemented:
+- Home assistant auto-discovery. All the found devices are now published to MQTT (you can also use this functionality to find out their command/state MQTT topics to control via Node RED for example)
+- MQTT configuration via web server running on the bridge.(Hold the button untill the onboard LED starts blinking fast) Configuration is saved to internal file system and persists after reboot.
+- Discovered Zigbee devices are now saved to internal file system. So the bridge remembers them even after the reset.
+- Zigbee end-device switch report support implemented.
+- Bridge status display via LED (Off=No Network, ON=Connected to MQTT, Fast blinking=Configuration mode, Slow blinking = connecting to MQTT)
+
+[More about this update example](https://hackaday.io/project/193049-esp32-c6-bug-esp32-bug-eth/log/228063-homeassistant-auto-discovery-for-the-home-brewed-zigbee-to-mqtt-bridge)
+
+- Parts needed:
+    - Esp32-C6-Bug
+    - Esp32-Bug-Eth
+    - Zigbee Smart socket/Zigbee Light bulb(Tested with Sonoff s26r2zbtpe smart socket as End device)
+
 ![Esp32-C6-Bug+Esp32-Bug-Eth Bridge and Zigbee Smart plug](images/zigbeesmartplug.jpg)
 ## ESP-IDF examples
 If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
