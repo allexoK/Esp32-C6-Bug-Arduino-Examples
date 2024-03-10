@@ -61,5 +61,7 @@ Additionally to the mentioned Zigbee to MQTT features from the previous example,
     - Esp32-Bug-Eth
     - Zigbee Smart socket/Zigbee Light bulb(Tested with Sonoff s26r2zbtpe smart socket as End device)
 
+[![Watch the video](images/ytvideo.png)](https://youtu.be/PwNcAayO8GI?si=LGGhpATkW5Eql88w)
+
 ## ESP-IDF examples
 If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
