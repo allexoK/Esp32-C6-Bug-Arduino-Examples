@@ -52,7 +52,7 @@ Additionally to the mentioned Zigbee to MQTT features from the previous example,
 - Zigbee end-device switch report support implemented.
 - Bridge status display via LED (Off=No Network, ON=Connected to MQTT, Fast blinking=Configuration mode, Slow blinking = connecting to MQTT)
 
-[More about this update example](https://hackaday.io/project/193049-esp32-c6-bug-esp32-bug-eth/log/228063-homeassistant-auto-discovery-for-the-home-brewed-zigbee-to-mqtt-bridge)
+[More about this example](https://hackaday.io/project/193049-esp32-c6-bug-esp32-bug-eth/log/228063-homeassistant-auto-discovery-for-the-home-brewed-zigbee-to-mqtt-bridge)
 
 - Parts needed:
     - Esp32-C6-Bug
