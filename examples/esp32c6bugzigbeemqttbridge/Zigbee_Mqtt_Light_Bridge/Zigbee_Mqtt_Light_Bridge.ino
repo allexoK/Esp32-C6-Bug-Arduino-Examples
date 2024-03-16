@@ -3,6 +3,7 @@
 // #include <ETH.h>
 #include <PubSubClient.h>
 #include <WiFi.h>
+#include <ArduinoJson.h>
 
 // #define USE_ETH
 
@@ -23,6 +24,8 @@
 const char* ssid     = "XXXXX"; // Change this to your WiFi SSID
 const char* password = "XXXXX"; // Change this to your WiFi password
 #endif
+
+StaticJsonDocument<256> doc;
 
 static bool eth_connected = false;
 WiFiClient ethClient;
@@ -49,8 +52,16 @@ static void esp_zb_task(void *pvParameters)
 void callback(char* topic, byte* payload, unsigned int length) {
   String payloadstr = String((char *)payload);
   int bstate = -1;
-  if(payload[0] == 48)bstate=0;
-  if(payload[0] == 49)bstate=1;
+  if(length<7) {
+    if(payload[0] == 48)bstate=0;
+    if(payload[0] == 49)bstate=1;
+  } else {
+    deserializeJson(doc, (const byte*)payload, length);
+    if(doc.containsKey("status")) {
+      if(doc["status"] == 0)bstate=0;
+      if(doc["status"] == 1)bstate=1;
+    }
+  }
   if(bstate != -1){
     if(bstate == 0 || bstate == 1){
       switch_func_pair_t button_func_pair;
