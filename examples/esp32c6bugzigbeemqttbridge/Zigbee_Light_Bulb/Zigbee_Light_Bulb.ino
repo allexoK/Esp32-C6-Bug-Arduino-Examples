@@ -14,13 +14,13 @@
 
 /**
  * @brief This example demonstrates simple Zigbee light bulb.
- * 
+ *
  * The example demonstrates how to use ESP Zigbee stack to create a end device light bulb.
  * The light bulb is a Zigbee end device, which is controlled by a Zigbee coordinator.
- * 
- * Proper Zigbee mode must be selected in Tools->Zigbee mode 
+ *
+ * Proper Zigbee mode must be selected in Tools->Zigbee mode
  * and also the correct partition scheme must be selected in Tools->Partition Scheme.
- * 
+ *
  * Please check the README.md for instructions and more detailed description.
  */
 
@@ -33,6 +33,7 @@
 #include "freertos/task.h"
 #include "ha/esp_zigbee_ha_standard.h"
 
+// #define LIGHT_IS_HIGH
 #define LED_PIN 8
 bool ledstate = true;
 
@@ -190,11 +191,19 @@ static esp_err_t zb_attribute_handler(const esp_zb_zcl_set_attr_value_message_t 
         if (message->info.cluster == ESP_ZB_ZCL_CLUSTER_ID_ON_OFF) {
             if (message->attribute.id == ESP_ZB_ZCL_ATTR_ON_OFF_ON_OFF_ID && message->attribute.data.type == ESP_ZB_ZCL_ATTR_TYPE_BOOL) {
                 light_state = message->attribute.data.value ? *(bool *)message->attribute.data.value : light_state;
+#ifndef LIGHT_IS_HIGH
                 ledstate = !light_state;
                 Serial.print("Light sets to ");
                 if(ledstate)Serial.println("Off");
                 if(!ledstate)Serial.println("On");
                 digitalWrite(LED_PIN,ledstate);
+#else
+                ledstate = light_state;
+                Serial.print("Light sets to ");
+                if(ledstate)Serial.println("On");
+                if(!ledstate)Serial.println("Off");
+                digitalWrite(LED_PIN,ledstate);
+#endif
             }
         }
     }
@@ -215,7 +224,7 @@ void setup() {
     // Init RMT and leave light OFF
     pinMode(LED_PIN ,OUTPUT);
     digitalWrite(LED_PIN,ledstate);
-    
+
     // Start Zigbee task
     xTaskCreate(esp_zb_task, "Zigbee_main", 4096, NULL, 5, NULL);
 }
