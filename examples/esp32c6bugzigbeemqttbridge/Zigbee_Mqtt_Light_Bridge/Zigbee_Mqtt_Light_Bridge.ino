@@ -1,8 +1,14 @@
 #include "Zigbee.h"
-#include <SPI.h>
-#include <ETH.h>
+// #include <SPI.h>
+// #include <ETH.h>
 #include <PubSubClient.h>
 #include <WiFi.h>
+
+// #define USE_ETH
+
+#ifdef USE_ETH
+#include <SPI.h>
+#include <ETH.h>
 #define ETH_TYPE        ETH_PHY_W5500
 #define ETH_ADDR         1
 #define ETH_CS           5
@@ -13,6 +19,10 @@
 #define ETH_SPI_SCK     6
 #define ETH_SPI_MISO    2
 #define ETH_SPI_MOSI    7
+#else
+const char* ssid     = "XXXXX"; // Change this to your WiFi SSID
+const char* password = "XXXXX"; // Change this to your WiFi password
+#endif
 
 static bool eth_connected = false;
 WiFiClient ethClient;
@@ -40,7 +50,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   String payloadstr = String((char *)payload);
   int bstate = -1;
   if(payload[0] == 48)bstate=0;
-  if(payload[0] == 49)bstate=1;  
+  if(payload[0] == 49)bstate=1;
   if(bstate != -1){
     if(bstate == 0 || bstate == 1){
       switch_func_pair_t button_func_pair;
@@ -56,6 +66,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void onEvent(arduino_event_id_t event, arduino_event_info_t info)
 {
   switch (event) {
+#ifdef USE_ETH
     case ARDUINO_EVENT_ETH_START:
       Serial.println("ETH Started");
       //set eth hostname here
@@ -81,6 +92,33 @@ void onEvent(arduino_event_id_t event, arduino_event_info_t info)
       Serial.println("ETH Stopped");
       eth_connected = false;
       break;
+#else
+    case ARDUINO_EVENT_WIFI_STA_START:
+      Serial.println("WIFI_STA Started");
+      //set eth hostname here
+      WiFi.setHostname("esp32-wifi");
+      break;
+    case ARDUINO_EVENT_WIFI_STA_CONNECTED:
+      Serial.println("WIFI_STA Connected");
+      break;
+    case ARDUINO_EVENT_WIFI_STA_GOT_IP:
+      Serial.print("WIFI_STA Got IP: ");
+      Serial.println(WiFi.localIP());
+      eth_connected = true;
+      break;
+    case ARDUINO_EVENT_WIFI_STA_LOST_IP:
+      Serial.println("WIFI_STA Lost IP");
+      eth_connected = false;
+      break;
+    case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
+      Serial.println("WIFI_STA Disconnected");
+      eth_connected = false;
+      break;
+    case ARDUINO_EVENT_WIFI_STA_STOP:
+      Serial.println("WIFI_STA Stopped");
+      eth_connected = false;
+      break;
+#endif
     default:
       break;
   }
@@ -112,8 +150,21 @@ void setup() {
     Serial.println("Let's go!");
     WiFi.onEvent(onEvent);
 
+#ifdef USE_ETH
     SPI.begin(ETH_SPI_SCK, ETH_SPI_MISO, ETH_SPI_MOSI);
     ETH.begin(ETH_TYPE, ETH_ADDR, ETH_CS, ETH_IRQ, ETH_RST, SPI);
+#else
+    Serial.print("WiFi STA Connecting to ");
+    Serial.println(ssid);
+
+    // WiFi.setHostname("esp32-wifi0");
+    WiFi.begin(ssid, password);
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+#endif
 
     client.setServer(mqttServer, 1883);
     client.setCallback(callback);
@@ -129,7 +180,7 @@ void setup() {
     ESP_ERROR_CHECK(esp_zb_platform_config(&config));
 
 
-    
+
     xTaskCreate(esp_zb_task, "Zigbee_main", 4096, NULL, 5, NULL);
 }
 
