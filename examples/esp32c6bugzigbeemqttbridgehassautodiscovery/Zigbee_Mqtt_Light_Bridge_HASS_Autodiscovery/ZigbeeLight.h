@@ -94,6 +94,7 @@ static void esp_zb_buttons_handler(switch_func_pair_t *button_func_pair)
           Serial.print(" Endpoint 0x");
           Serial.println(cmd_req.zcl_basic_cmd.dst_endpoint,HEX);
           esp_zb_zcl_on_off_cmd_req(&cmd_req);
+
         }
     }
 }
@@ -189,6 +190,31 @@ static esp_err_t zb_attribute_reporting_handler(const esp_zb_zcl_report_attr_mes
     return ESP_OK;
 }
 
+static esp_err_t esp_zb_disc_attr_resp_handler(const esp_zb_zcl_cmd_discover_attributes_resp_message_t *message)
+{
+    if(!message)return ESP_FAIL;///////////////////////////////////////////////////////////////////////Double check, maybe wrong
+    if(message->info.status != ESP_ZB_ZCL_STATUS_SUCCESS){
+      Serial.print("Received message: error status ");
+      Serial.println(message->info.status);
+    }
+    
+    Serial.print("Discover attribute response: status ");
+    Serial.print(message->info.status);
+    Serial.print(", cluster ");
+    Serial.println(message->info.cluster,HEX);
+
+    uint16_t data_head_len = sizeof(esp_zb_zcl_cmd_info_t);
+    uint16_t id_len = sizeof(uint16_t), status_len = sizeof(esp_zb_zcl_attr_type_t);
+
+    for (esp_zb_zcl_disc_attr_variable_t *variables = message->variables; variables != NULL; variables = variables->next) {
+      Serial.print("attribute 0x");
+      Serial.print(variables->attr_id,HEX);
+      Serial.print(" data_type 0x");
+      Serial.print(variables->data_type,HEX);
+    }
+    return ESP_OK;
+}
+
 static esp_err_t zb_action_handler(esp_zb_core_action_callback_id_t callback_id, const void *message)
 {
     esp_err_t ret = ESP_OK;
@@ -198,6 +224,9 @@ static esp_err_t zb_action_handler(esp_zb_core_action_callback_id_t callback_id,
         break;
     case ESP_ZB_CORE_CMD_REPORT_CONFIG_RESP_CB_ID:
         ret = zb_configure_report_resp_handler((esp_zb_zcl_cmd_config_report_resp_message_t *)message);
+        break;
+    case ESP_ZB_CORE_CMD_DISC_ATTR_RESP_CB_ID:
+        ret = esp_zb_disc_attr_resp_handler((esp_zb_zcl_cmd_discover_attributes_resp_message_t *)message);
         break;
     default:
         Serial.print("Receive Zigbee action callback_id 0x");
@@ -210,7 +239,7 @@ static esp_err_t zb_action_handler(esp_zb_core_action_callback_id_t callback_id,
 static void user_find_cb(esp_zb_zdp_status_t zdo_status, uint16_t addr, uint8_t endpoint, void *user_ctx)
 {
     if (zdo_status == ESP_ZB_ZDP_STATUS_SUCCESS) {
-        Serial.println("Found light");
+        Serial.println("Found device with on/off cluster");
         light_bulb_device_params_t *light = (light_bulb_device_params_t *)malloc(sizeof(light_bulb_device_params_t));
         light->endpoint = endpoint;
         light->short_addr = addr;
@@ -250,13 +279,77 @@ static void esp_zb_task(void *pvParameters)
     esp_zb_main_loop_iteration();
 }
 
+static void simple_desc_cb(esp_zb_zdp_status_t zdo_status, esp_zb_af_simple_desc_1_1_t *simple_desc, void *user_ctx)
+{
+    if (zdo_status == ESP_ZB_ZDP_STATUS_SUCCESS) {
+        Serial.print("Simple desc response: status(");
+        Serial.print(zdo_status);
+        Serial.print("), device_id(");
+        Serial.print(simple_desc->app_device_id);
+        Serial.print("), app_version(");
+        Serial.print(simple_desc->app_device_version);
+        Serial.print("), profile_id(0x");
+        Serial.print(simple_desc->app_profile_id,HEX);
+        Serial.print("), endpoint_ID(");
+        Serial.print(simple_desc->endpoint);
+        Serial.println(")");
+        
+        Serial.print("Cluster ID list:");
+        for (int i = 0; i < (simple_desc->app_input_cluster_count + simple_desc->app_output_cluster_count); i++) {
+            Serial.print(" 0x");
+            Serial.print(*(simple_desc->app_cluster_list + i),HEX);
+            if(*(simple_desc->app_cluster_list + i)==6){
+                esp_zb_zdo_match_desc_req_param_t  cmd_req;
+                cmd_req.dst_nwk_addr = *((uint16_t*)user_ctx);
+                cmd_req.addr_of_interest = *((uint16_t*)user_ctx);
+//                esp_zb_zdo_find_on_off_light(&cmd_req, user_find_cb, user_ctx);
+
+                          
+//                esp_zb_zcl_disc_attr_cmd_t cmd_req2;
+//                cmd_req2.address_mode = ESP_ZB_APS_ADDR_MODE_16_ENDP_PRESENT;
+//
+//                cmd_req2.zcl_basic_cmd.src_endpoint = 
+//                cmd_req2.zcl_basic_cmd.dst_endpoint = simple_desc->endpoint;
+//                
+//                cmd_req2.zcl_basic_cmd.dst_addr_u.addr_short = *((uint16_t*)user_ctx);
+//                cmd_req2.cluster_id = *(simple_desc->app_cluster_list + i);
+//                cmd_req2.start_attr_id = 0;
+//                cmd_req2.max_attr_number = 65535;
+//                cmd_req2.direction = ESP_ZB_ZCL_CMD_DIRECTION_TO_SRV;
+//                
+//                esp_zb_zcl_disc_attr_cmd_req(&cmd_req2);
+                
+
+              }
+        }
+
+        
+
+
+        Serial.println();
+    }
+}
+
+static void ep_cb(esp_zb_zdp_status_t zdo_status, uint8_t ep_count, uint8_t *ep_id_list, void *user_ctx)
+{
+    if (zdo_status == ESP_ZB_ZDP_STATUS_SUCCESS) {
+        Serial.print("Active endpoint response: status :");
+        Serial.println(zdo_status);
+        for (int i = 0; i < ep_count; i++) {
+            esp_zb_zdo_simple_desc_req_param_t simple_desc_req;
+            simple_desc_req.addr_of_interest = *((uint16_t*)user_ctx);
+            simple_desc_req.endpoint = ep_id_list[i];
+            esp_zb_zdo_simple_desc_req(&simple_desc_req, simple_desc_cb, user_ctx);
+        }
+    }
+}
 
 void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
 {
     uint32_t *p_sg_p       = signal_struct->p_app_signal;
     esp_err_t err_status = signal_struct->esp_err_status;
     esp_zb_app_signal_type_t sig_type = (esp_zb_app_signal_type_t)*p_sg_p;
-    esp_zb_zdo_signal_device_annce_params_t *dev_annce_params = NULL;
+    static esp_zb_zdo_signal_device_annce_params_t *dev_annce_params = NULL;
     esp_zb_zdo_signal_leave_indication_params_t *leave_ind_params = NULL;
     switch (sig_type) {
     case ESP_ZB_ZDO_SIGNAL_SKIP_STARTUP:
@@ -316,10 +409,12 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
         Serial.print("New device commissioned or rejoined (short: 0x");
         Serial.print(dev_annce_params->device_short_addr,HEX);
         Serial.println(")");
-        esp_zb_zdo_match_desc_req_param_t  cmd_req;
-        cmd_req.dst_nwk_addr = dev_annce_params->device_short_addr;
-        cmd_req.addr_of_interest = dev_annce_params->device_short_addr;
-        esp_zb_zdo_find_on_off_light(&cmd_req, user_find_cb, NULL);
+    
+        Serial.println("Discovering supported clusters and attributes");
+        esp_zb_zdo_active_ep_req_param_t active_ep_req;
+        active_ep_req.addr_of_interest = dev_annce_params->device_short_addr;
+
+        esp_zb_zdo_active_ep_req(&active_ep_req, ep_cb, &dev_annce_params->device_short_addr);
         break;
     default:
 //        Serial.println("ZDO signal: %s (0x%x), status: %s", esp_zb_zdo_signal_to_string(sig_type), sig_type,
