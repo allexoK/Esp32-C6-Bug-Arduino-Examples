@@ -42,7 +42,7 @@ The example demonstrates a simple Zigbee to MQTT bridge for light bulbs. The Esp
 ![Esp32-C6-Bug+Esp32-Bug-Eth Bridge and Zigbee Smart plug](images/zigbeesmartplug.jpg)
 
 ### esp32c6bugzigbeemqttbridgehassautodiscovery
-This is an ugraded version of esp32c6bugzigbeemqttbridge. More  To compile it you will also need the following libraries:
+This is an ugraded version of esp32c6bugzigbeemqttbridge.  To compile it you will also need the following libraries:
 - LinkedList
 - SPIFFs
 - ArduinoJson
@@ -62,6 +62,16 @@ Additionally to the mentioned Zigbee to MQTT features from the previous example,
     - Zigbee Smart socket/Zigbee Light bulb(Tested with Sonoff s26r2zbtpe smart socket as End device)
 
 [![Watch the video](images/ytvideo.png)](https://youtu.be/PwNcAayO8GI?si=LGGhpATkW5Eql88w)
+
+### esp32c6bugsim7080ggpsanddebug
+To compile it you will also need the following libraries:
+- TinyGSM
+
+These two examples demonstrate some basic Esp32-C6-Bug communication with SIM7080G Multi-Band CAT-M(eMTC)/NB-IoT/GNSS module. After ATDebug example is flashed, the commands sent via Esp32-C6-Bug are resend to SIM7080G, which is usefull for debug purposes. GPSExample demonstrates GPS functionaloty of SIM7080G. Ensure that GPS antenna is outside, so it can receive signal. 
+
+- Parts needed:
+    - Esp32-C6-Bug
+    - Any board with Sim7080G module
 
 ## ESP-IDF examples
 If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
