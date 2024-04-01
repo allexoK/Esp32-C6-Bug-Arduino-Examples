@@ -73,5 +73,20 @@ These two examples demonstrate some basic Esp32-C6-Bug communication with SIM708
     - Esp32-C6-Bug
     - Any board with Sim7080G module
 
+### esp32c6bugawsmqttwifi
+This basic example demonstrates Esp32-C6-Bug connection to Amazon AWS IoT Core. Nothing fancy just connection and publishing of the dummy data. The example is heavily based on this [great video](https://youtu.be/idf-gGXvIu4?si=hLH2Tkli5HUsZhBz). I was initially planning to connect via Sim7080G, but ssl configuration on Sim7080g hit me good, hopefully I will get it running some time later. 
+Some preparations to be done beforehand:
+- Configure Amazon IoT core, note the endpoint address
+- create Amazon 'thing' and generate SSL certificates.
+- Set downloaded certificates into secrets.h file
+- Set your Wifi credentials and thing name in secrets.h file
+- Set aws endpoint in secrets.h file
+- Flash the code.
+
+- Parts needed:
+    - Esp32-C6-Bug
+
+
+
 ## ESP-IDF examples
 If you are also interested in advanced features of Esp32-C6 like Zigbee and thread please refer to [Official examples](https://github.com/espressif/esp-idf/tree/release/v5.1/examples) and to Demos section of [Esp32-C6-Bug datasheet](https://github.com/allexoK/Esp32-C6-Bug-Docs/blob/main/esp32c6bugdatasheet.pdf) 
