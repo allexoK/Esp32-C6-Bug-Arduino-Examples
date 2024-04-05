@@ -86,6 +86,20 @@ Some preparations to be done beforehand:
 - Parts needed:
     - Esp32-C6-Bug
 
+### esp32c6bugawsmqttsim
+This example demonstrates Esp32-C6-Bug connection to Amazon AWS IoT Core using SIM7080G module. Use [VeriSign-Class 3-Public-Primary-Certification-Authority-G5 certificate](https://www.digicert.com/kb/digicert-root-certificates.html) as root CA.
+
+Some preparations to be done beforehand:
+- Configure Amazon IoT core, note the endpoint address
+- create Amazon 'thing' and generate SSL certificates.
+- Set downloaded certificates in certs folder
+- Set aws endpoint in the code, and remove '-ats' from endpoint URL(more about it in comments in the code).
+- Set SIM card pincode in the code
+- Flash the code.
+
+- Parts needed:
+    - Esp32-C6-Bug
+    - Esp32-Bug-Sim shield
 
 
 ## ESP-IDF examples
