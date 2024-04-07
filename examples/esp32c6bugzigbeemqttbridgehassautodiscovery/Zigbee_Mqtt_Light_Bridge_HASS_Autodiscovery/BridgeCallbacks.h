@@ -36,14 +36,14 @@ void subsribedTopicNewMessageCallback(char* topic, byte* payload, unsigned int l
 
 void attribute_report_callback(const esp_zb_zcl_report_attr_message_t *message){
   for (JsonPair kv : root) {
-    Serial.println(kv.key().c_str());
+//    Serial.println(kv.key().c_str());
     if(root[kv.key().c_str()].containsKey("buggylight_additional")){
       if(root[kv.key().c_str()]["buggylight_additional"]["zb_short_address"]==message->src_address.u.short_addr){
         if(message->cluster == 6){
           String attribute_val = String(message->attribute.data.value ? *(uint8_t *)message->attribute.data.value : 0);
           if(client.connected())client.publish((char*)String(root[kv.key().c_str()]["state_topic"]).c_str(),(uint8_t*)attribute_val.c_str(),attribute_val.length());
           }
-        Serial.println("Short addr match");
+//        Serial.println("Short addr match");
         }
       }
     }

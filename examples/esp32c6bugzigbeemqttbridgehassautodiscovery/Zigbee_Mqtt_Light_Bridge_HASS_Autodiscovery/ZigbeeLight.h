@@ -417,8 +417,12 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
         esp_zb_zdo_active_ep_req(&active_ep_req, ep_cb, &dev_annce_params->device_short_addr);
         break;
     default:
-//        Serial.println("ZDO signal: %s (0x%x), status: %s", esp_zb_zdo_signal_to_string(sig_type), sig_type,
-//                 esp_err_to_name(err_status));
+        Serial.print("ZDO signal:");
+        Serial.print(esp_zb_zdo_signal_to_string(sig_type));
+        Serial.print("(0x");
+        Serial.print(sig_type,HEX);
+        Serial.print("), status:");
+        Serial.println(esp_err_to_name(err_status));
         break;
     }
 }
