@@ -58,7 +58,7 @@ void onEvent(arduino_event_id_t event, arduino_event_info_t info)
       Serial.println("ETH Connected");
       break;
     case ARDUINO_EVENT_ETH_GOT_IP:
-      ETH.printInfo(Serial);
+      ETH.printTo(Serial);
       eth_connected = true;
       break;
     case ARDUINO_EVENT_ETH_LOST_IP:

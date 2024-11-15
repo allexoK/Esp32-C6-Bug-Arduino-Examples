@@ -5,6 +5,7 @@
 
 #include <ETH.h>
 #include <SPI.h>
+#include <WiFi.h>
 
 // Set this to 1 to enable dual Ethernet support
 #define USE_TWO_ETH_PORTS 0
@@ -45,9 +46,9 @@ void onEvent(arduino_event_id_t event, arduino_event_info_t info)
       break;
     case ARDUINO_EVENT_ETH_GOT_IP:
       Serial.printf("ETH Got IP: '%s'\n", esp_netif_get_desc(info.got_ip.esp_netif));
-      ETH.printInfo(Serial);
+      ETH.printTo(Serial);
 #if USE_TWO_ETH_PORTS
-      ETH1.printInfo(Serial);
+      ETH1.printTo(Serial);
 #endif
       eth_connected = true;
       break;
